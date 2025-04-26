@@ -2,9 +2,10 @@ import './App.css'
 
 function App() {
 
+  let count = 0;
+
   return (
     <>
-      
       <div className="card">
         <h1>Valvio</h1>
 
