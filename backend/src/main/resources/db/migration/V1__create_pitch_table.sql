@@ -1,4 +1,4 @@
-CREATE TABLE pitch (
+CREATE TABLE IF NOT EXISTS pitch (
     id              TEXT PRIMARY KEY,
     note_letter     TEXT,
     accidental      TEXT,
