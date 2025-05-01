@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 
@@ -37,6 +37,25 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
+/* Modern background card with purple gradient and rounded corners */
+.info-card {
+  background: linear-gradient(135deg, #8e24aa, #ab47bc); /* Purple gradient */
+  color: #ffffff; /* White text for contrast */
+  border-radius: 12px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  max-width: 600px; /* Limit the width */
+  margin: 20px auto; /* Center the card horizontally */
+  text-align: center; /* Center-align text */
+}
+
+.info-card h2 {
+  margin-bottom: 10px; /* Space below the heading */
+  font-size: 24px; /* Larger font size for the heading */
+}
+
+.info-card p {
+  margin: 0; /* Remove default margin */
+  font-size: 16px; /* Slightly smaller font size for the paragraph */
+  line-height: 1.5; /* Improve readability */
 }

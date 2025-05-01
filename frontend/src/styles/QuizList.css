@@ -1,0 +1,102 @@
+.quiz-list {
+  padding: 20px;
+  /* background-color: #121212;  */
+  color: #e0e0e0; /* Light text color */
+}
+
+.quiz-unit {
+  margin-bottom: 30px;
+}
+
+.quiz-unit h2 {
+  margin-bottom: 15px;
+  color: #e0e0e0; /* Light text color */
+}
+
+.quiz-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center; /* Horizontally center the cards */
+  align-items: center; /* Vertically align the cards (if needed) */
+}
+
+.quiz-card {
+  background: #1e1e1e; /* Dark card background */
+  border: 1px solid #333; /* Darker border */
+  border-radius: 8px;
+  padding: 10px; /* Reduced padding */
+  width: 200px; /* Fixed width */
+  height: 160px; /* Reduced height */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space out content inside the card */
+}
+
+.quiz-card h3 {
+  margin: 0 0 5px; /* Reduced margin */
+  font-size: 16px; /* Slightly smaller font size */
+  color: #ffffff; /* White text for headings */
+}
+
+.quiz-card p {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #b0b0b0; /* Slightly muted text color */
+}
+
+.quiz-tag {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.quiz-tag.new-note {
+  background-color: #4caf50; /* Green tag */
+}
+
+.quiz-tag.review {
+  background-color: #2196f3; /* Blue tag */
+}
+
+.quiz-tag.unit-quiz {
+  background-color: #e57373; /* Muted red */
+}
+
+.quiz-tag.scale {
+  background-color: #9c27b0; /* Purple tag */
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .quiz-list {
+    padding: 10px; /* Reduce padding on mobile */
+  }
+
+  .quiz-cards {
+    gap: 10px; /* Reduce spacing between cards */
+  }
+
+  .quiz-card {
+    width: 150px; /* Smaller width for mobile */
+    height: 120px; /* Smaller height for mobile */
+    padding: 8px; /* Reduce padding inside cards */
+  }
+
+  .quiz-card h3 {
+    font-size: 14px; /* Smaller font size for headings */
+  }
+
+  .quiz-card p {
+    font-size: 12px; /* Smaller font size for text */
+  }
+
+  .quiz-tag {
+    font-size: 10px; /* Smaller font size for tags */
+    padding: 3px 8px; /* Reduce padding for tags */
+  }
+}
