@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/QuizList.css'; 
+import { QuizControllerApi, QuizResponseDto } from '../api';
 
 interface Quiz {
   id: number;
@@ -11,19 +12,19 @@ interface Quiz {
 }
 
 const QuizList: React.FC = () => {
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [quizzes, setQuizzes] = useState<QuizResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const quizController = new QuizControllerApi();
+
+
 
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const response = await fetch('http://localhost:8080/quiz');
-        if (!response.ok) {
-          throw new Error('Failed to fetch quizzes');
-        }
-        const data = await response.json();
+        const { data } = await quizController.getAllQuizzes();
         setQuizzes(data);
+        
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -35,11 +36,14 @@ const QuizList: React.FC = () => {
   }, []);
 
   // Group quizzes by quizUnitName
-  const groupedQuizzes = quizzes.reduce((acc: Record<string, Quiz[]>, quiz) => {
-    if (!acc[quiz.quizUnitName]) {
-      acc[quiz.quizUnitName] = [];
+  const groupedQuizzes = quizzes.reduce((acc: Record<string, QuizResponseDto[]>, quiz) => {
+    if (quiz.quizUnitName){
+        if (!acc[quiz.quizUnitName]) {
+            acc[quiz.quizUnitName] = [];
+          }
+          acc[quiz.quizUnitName].push(quiz);
     }
-    acc[quiz.quizUnitName].push(quiz);
+
     return acc;
   }, {});
 
@@ -56,7 +60,7 @@ const QuizList: React.FC = () => {
               <div key={quiz.id} className="quiz-card">
                 <h3>{quiz.name}</h3>
                 <p>Level: {quiz.level}</p>
-                <span className={`quiz-tag ${quiz.quizTypeName.toLowerCase().replace(/\s+/g, '-')}`}>
+                <span className={`quiz-tag ${quiz.quizTypeName?.toLowerCase().replace(/\s+/g, '-')}`}>
                   {quiz.quizTypeName}
                 </span>
               </div>
