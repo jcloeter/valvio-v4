@@ -12,9 +12,6 @@ public class QuizType {
 
     private String name;
 
-    @OneToMany(mappedBy = "quizType")
-    private List<Quiz> quizzes;
-
     public Long getId() {
         return id;
     }
@@ -31,11 +28,4 @@ public class QuizType {
         this.name = name;
     }
 
-    public List<Quiz> getQuizzes() {
-        return quizzes;
-    }
-
-    public void setQuizzes(List<Quiz> quizzes) {
-        this.quizzes = quizzes;
-    }
 }
