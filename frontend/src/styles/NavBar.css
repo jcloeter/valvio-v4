@@ -1,0 +1,181 @@
+/* Container for the side navigation */
+.side-nav-container {
+    position: relative;
+  }
+  
+  /* Hamburger menu button */
+  .hamburger-menu {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  /* Side navigation bar */
+  .side-nav {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Hidden by default */
+    width: 250px;
+    height: 100%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: left 0.3s ease;
+  }
+  
+  /* Open state for the side navigation */
+  .side-nav.open {
+    left: 0; /* Slide in from the left */
+  }
+  
+  /* Links inside the side navigation */
+  .side-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .side-nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive styles for mobile */
+  @media (max-width: 768px) {
+    .hamburger-menu {
+      display: block; /* Show hamburger menu on mobile */
+    }
+  
+    .side-nav {
+      width: 200px; /* Smaller width for mobile */
+    }
+  }/* Container for the side navigation */
+.side-nav-container {
+  position: relative;
+}
+
+/* Hamburger menu button */
+.hamburger-menu {
+  display: none; /* Hide the hamburger menu since the side nav is always visible */
+}
+
+/* Side navigation bar */
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: 0; /* Always fully visible */
+  width: 250px; /* Fixed width for the side nav */
+  height: 100%;
+  background-color: #1e1e1e; /* Dark background */
+  color: #ffffff; /* White text */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+  transition: none; /* Remove animation since it's always visible */
+}
+
+/* Links inside the side navigation */
+.side-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.side-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block; /* Show hamburger menu on mobile */
+  }
+
+  .side-nav {
+    left: -250px; /* Hidden by default on mobile */
+    transition: left 0.3s ease; /* Slide-in animation for mobile */
+  }
+
+  .side-nav.open {
+    left: 0; /* Slide in from the left on mobile */
+  }
+}/* Container for the top navigation */
+.top-nav-container {
+  position: fixed; /* Fix the navbar at the top */
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width of the application */
+  background-color: #1e1e1e; /* Dark background */
+  color: #ffffff; /* White text */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between hamburger and nav links */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+/* Hamburger menu button */
+.hamburger-menu {
+  display: none; /* Hidden by default on larger screens */
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+/* Top navigation bar */
+.top-nav {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end; /* Align links to the right */
+  flex-grow: 0; /* Prevent unnecessary stretching */
+  width: auto; /* Ensure it only takes up the required space */
+}
+
+.top-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.top-nav a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block; /* Show hamburger menu on mobile */
+  }
+
+  .top-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; /* Full width dropdown */
+    background-color: #1e1e1e;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+    display: none; /* Hidden by default */
+  }
+
+  .top-nav.open {
+    display: flex; /* Show the menu when open */
+  }
+}

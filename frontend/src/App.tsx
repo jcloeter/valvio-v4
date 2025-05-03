@@ -1,26 +1,14 @@
+import { BrowserRouter } from 'react-router-dom';
 import './App.css'
-import QuizList from './components/QuizList'
+import AppRoutes from './router/AppRoutes';
 
 function App() {
 
   return (
-    <>
-      <div className="card">
-        <h1>Valvio</h1>
-
-        <div className = "info-card">
-          <h2>Introducing Valvio, the fastest way to learn trumpet.</h2>
-          <p>Valvio is the world's most popular Trumpet Note Quiz App. Made by a trumpet teacher for trumpet players. </p>
-        </div>
-       
-      </div>
-
-
-        <QuizList/>
-
-       
-    </>
-  )
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
 }
 
 export default App
