@@ -1,9 +1,8 @@
 package com.valviomusic.valvio.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table
@@ -26,6 +25,10 @@ public class Pitch {
 
     @Column
     private short position;
+
+    @ManyToMany(mappedBy = "pitchList")
+    private List<Quiz> quizList;
+
 
     public String getId() {
         return id;

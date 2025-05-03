@@ -9,9 +9,8 @@ public class QuizPitch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id", nullable = false)
-    private Quiz quiz;
+    @Column(name = "quiz_id", nullable = false)
+    private Long quizId;
 
     @Column(name = "pitch_id", nullable = false)
     private String pitchId;
@@ -27,14 +26,14 @@ public class QuizPitch {
         this.id = id;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
+    public Long getQuizId() {
+        return quizId;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
+    public void setQuizId(Long quizId) {
+        this.quizId = quizId;
     }
-
+    
     public String getPitchId() {
         return pitchId;
     }

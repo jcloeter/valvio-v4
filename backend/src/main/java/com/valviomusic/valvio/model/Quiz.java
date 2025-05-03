@@ -2,8 +2,6 @@ package com.valviomusic.valvio.model;
 
 import jakarta.persistence.*;
 import java.util.List;
-import com.valviomusic.valvio.model.QuizPitch;
-import com.valviomusic.valvio.model.QuizUnit;
 
 @Entity
 public class Quiz {
@@ -26,8 +24,13 @@ public class Quiz {
 
     private Long length;
 
-    @OneToMany(mappedBy = "quiz")
-    private List<QuizPitch> quizPitches;
+    @ManyToMany()
+    @JoinTable(
+            name = "quiz_pitch",
+            joinColumns = @JoinColumn(name = "quiz_id"),
+            inverseJoinColumns = @JoinColumn(name = "pitch_id")
+    )
+    private List<Pitch> pitchList;
 
     public Long getId() {
         return id;
@@ -77,11 +80,12 @@ public class Quiz {
         this.length = length;
     }
 
-    public List<QuizPitch> getQuizPitches() {
-        return quizPitches;
+    public List<Pitch> getPitchList() {
+        return pitchList;
     }
 
-    public void setQuizPitches(List<QuizPitch> quizPitches) {
-        this.quizPitches = quizPitches;
+    public void setPitchList(List<Pitch> pitchList) {
+        this.pitchList = pitchList;
     }
+
 }
