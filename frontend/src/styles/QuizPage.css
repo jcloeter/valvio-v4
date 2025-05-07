@@ -4,7 +4,6 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(135deg, #0f0f0f, #1a1a1a); /* Subtle gradient background */
     color: #ffffff; /* Light text */
     font-family: 'Roboto', sans-serif; /* Modern font */
   }
@@ -21,20 +20,24 @@
     padding: 10px 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Slightly stronger shadow */
-    color: #a855f7; /* Vibrant purple text */
-    text-shadow: 0 0 5px #a855f7; /* Glow effect */
+    color: #ffffff; /* White text */
+    text-shadow: none; /* Remove glow effect */
   }
   
   .music-note img {
-    width: 150px;
+    width: 300px; /* Twice as big (original was 150px) */
     height: auto;
     margin-bottom: 30px;
-    filter: drop-shadow(0 0 10px #a855f7); /* Glowing effect for the image */
+    border-radius: 16px; /* Rounded corners */
+    filter: none; /* Remove glowing effect */
+    box-shadow: none; /* Ensure no shadow is applied */
   }
   
   .valves {
     display: flex;
     gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
   }
   
   .valve {
@@ -61,4 +64,28 @@
   .valve:hover {
     background: radial-gradient(circle, #444, #333); /* Slightly lighter on hover */
     box-shadow: 0 4px 20px rgba(168, 85, 247, 0.8); /* Stronger purple glow on hover */
+  }
+  
+  .submit-button {
+    width: calc(80px * 3 + 40px * 2); /* Same width as the three valves combined */
+    height: 50px;
+    background-color: #a855f7;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #9333ea;
+    transform: translateY(-2px);
+  }
+  
+  .submit-button:active {
+    background-color: #7e22ce;
+    transform: translateY(2px);
   }

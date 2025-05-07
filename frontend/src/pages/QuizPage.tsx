@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Import useParams to get the quizId from the URL
+import React, { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../styles/QuizPage.css';
-import { Pitch, QuizControllerApi, QuizResponseDto } from '../api'; // Import API and types
+import { Pitch, QuizAttemptResponseDto } from '../api';
+import { createImageUrlFromPitchId } from '../util/createImageUrlFromPitchId';
+import { extendPitchList } from '../util/extendPitchList';
 
 const QuizPage: React.FC = () => {
-  const { quizId } = useParams<{ quizId: string }>(); // Extract quizId from the URL
+  const location = useLocation();
+  const quizAttempt = location.state?.quizAttempt as QuizAttemptResponseDto;
+
   const [valves, setValves] = useState({ first: false, second: false, third: false });
   const [score, setScore] = useState(0);
-  const [time, setTime] = useState(60); // 60 seconds timer
+  const [time, setTime] = useState(0);
   const [missedNotes, setMissedNotes] = useState(0);
-  const [pitches, setPitches] = useState<Pitch[]>([]); // State to store pitch data
-  const [quiz, setQuiz] = useState<QuizResponseDto>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const quizController = new QuizControllerApi();
+  const [pitchList, setPitchList] = useState<Pitch[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0); // Track the current pitch index
+  const [error, setError] = useState<boolean>(false);
 
-  // Fetch pitch data for the quiz
+  const noteImageUrl = useMemo(()=>{
+    return createImageUrlFromPitchId(pitchList[currentIndex]?.id || '')
+  }, [pitchList, currentIndex])
+
   useEffect(() => {
-    const fetchPitches = async () => {
-      if (!quizId) return; // Ensure quizId is available
-      try {
-        setLoading(true);
-        const { data } = await quizController.getPitchesForQuiz(Number(quizId)); // Fetch pitch data
-        setPitches(data?.pitchList); // Store the fetched pitches
-        setQuiz(data);
-      } catch (err: any) {
-        setError(err.message); // Handle errors
-      } finally {
-        setLoading(false);
-      }
-    };
+    const pitches = quizAttempt.quiz?.pitchList;
+    const quizLength = quizAttempt.quiz?.length;
 
-    fetchPitches();
-  }, [quizId]); // Re-run if quizId changes
+    if (pitches && quizLength) {
+      const extendedPitchList: Pitch[] = extendPitchList(pitches, quizLength);
+      setPitchList(extendedPitchList);
+    } else {
+      setError(true);
+    }
+  }, [quizAttempt]);
 
-  // Handle key presses for J, K, L
+  // Handle key presses for J, K, L and Spacebar
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'j') setValves((prev) => ({ ...prev, first: true }));
       if (e.key === 'k') setValves((prev) => ({ ...prev, second: true }));
       if (e.key === 'l') setValves((prev) => ({ ...prev, third: true }));
+      if (e.key === ' ') handleSubmit(); // Submit on spacebar press
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -60,7 +60,7 @@ const QuizPage: React.FC = () => {
   // Timer logic
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime((prev) => (prev > 0 ? prev - 1 : 0));
+      setTime((prev) => prev + 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -71,22 +71,54 @@ const QuizPage: React.FC = () => {
     setValves((prev) => ({ ...prev, [valve]: !prev[valve] }));
   };
 
-  if (loading) return <p>Loading pitch data...</p>;
-  if (error) return <p>Error: {error}</p>;
+  // Handle submit action
+  const handleSubmit = () => {
+    console.log("submit")
+    if (currentIndex >= pitchList.length) return; // Prevent submission if quiz is over
+
+    const currentPitch = pitchList[currentIndex];
+    const userInput = calculateUserInput(valves); // Calculate user input based on valve states
+
+    console.log(valves)
+    console.log(userInput);
+    console.log(currentPitch.position?.toString());
+
+    if (userInput === currentPitch.position?.toString()) {
+        console.log("correct")
+      setScore((prev) => prev + 1);
+      setCurrentIndex((prev) => prev + 1); // Move to the next pitch
+      setValves({ first: false, second: false, third: false }); // Reset valves
+    } else {
+      setMissedNotes((prev) => prev + 1);
+    }
+  };
+
+  const calculateUserInput = (valves: { first: boolean; second: boolean; third: boolean }): string => {
+    // Convert valve states to a string value
+    let position = '';
+    if (valves.first) position += '1';
+    if (valves.second) position += '2';
+    if (valves.third) position += '3';
+    if (position === '') position = '0';
+    return position;
+  };
 
   return (
     <div className="quiz-page">
-        <h3>{quiz?.name}</h3>
+      <h3>{quizAttempt.quiz?.name}</h3>
       <div className="trackers">
         <div className="tracker">Score: {score}</div>
         <div className="tracker">Time: {time}s</div>
         <div className="tracker">Missed Notes: {missedNotes}</div>
       </div>
       <div className="music-note">
-        {pitches.length > 0 ? (
-          <img src={"/fix-me"} alt={"pitch-data"} />
+        {currentIndex < pitchList.length ? (
+          <img
+            src={noteImageUrl}
+            alt={`Pitch ${currentIndex + 1}`}
+          />
         ) : (
-          <p>No pitch data available</p>
+          <p>Quiz Complete!</p>
         )}
       </div>
       <div className="valves">
@@ -109,6 +141,9 @@ const QuizPage: React.FC = () => {
           3
         </div>
       </div>
+      <button className="submit-button" onClick={handleSubmit}>
+        Submit
+      </button>
     </div>
   );
 };
