@@ -1,8 +1,11 @@
 package com.valviomusic.valvio.controller;
 
+import com.valviomusic.valvio.controller.dto.response.QuizAttemptResponseDto;
 import com.valviomusic.valvio.controller.dto.response.QuizResponseDto;
 import com.valviomusic.valvio.model.Quiz;
+import com.valviomusic.valvio.model.QuizAttempt;
 import com.valviomusic.valvio.repository.QuizRepository;
+import com.valviomusic.valvio.service.QuizService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +19,14 @@ public class QuizController {
 
     private final QuizRepository quizRepository;
 
+    private final QuizService quizService;
+
     public QuizController(
-            QuizRepository quizRepository
+            QuizRepository quizRepository,
+            QuizService quizService
     ){
         this.quizRepository = quizRepository;
+        this.quizService = quizService;
     }
 
     @GetMapping
@@ -32,19 +39,14 @@ public class QuizController {
         return new ResponseEntity<>(quizResponseDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/pitches")
-    public ResponseEntity<QuizResponseDto> getPitchesForQuiz(
+    @PostMapping("/{id}/start")
+    public ResponseEntity<QuizAttemptResponseDto> startQuiz(
             @PathVariable Long id
     ){
-        Optional<Quiz> optionalQuiz = quizRepository.findById(id);
+        QuizAttempt quizAttempt = quizService.startQuiz(id);
+        QuizAttemptResponseDto quizAttemptResponseDto = QuizAttemptResponseDto.fromModel(quizAttempt);
 
-        if (optionalQuiz.isEmpty()){
-            throw new RuntimeException("Invalid quiz Id");
-        }
-
-        Quiz quiz = optionalQuiz.get();
-        QuizResponseDto quizResponseDto = QuizResponseDto.fromModel(quiz);
-        return new ResponseEntity<>(quizResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(quizAttemptResponseDto, HttpStatus.CREATED);
     }
 
 }

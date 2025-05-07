@@ -22,7 +22,7 @@ public class QuizService {
         this.quizAttemptRepository = quizAttemptRepository;
     }
 
-    public Quiz createQuizAttempt(Long quizId){
+    public QuizAttempt startQuiz(Long quizId){
 
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new IllegalArgumentException("Quiz not found with id: " + quizId));
@@ -33,7 +33,7 @@ public class QuizService {
 
         quizAttemptRepository.save(quizAttempt);
 
-        return quiz;
+        return quizAttempt;
     }
 
 }

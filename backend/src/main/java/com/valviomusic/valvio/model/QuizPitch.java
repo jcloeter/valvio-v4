@@ -33,7 +33,7 @@ public class QuizPitch {
     public void setQuizId(Long quizId) {
         this.quizId = quizId;
     }
-    
+
     public String getPitchId() {
         return pitchId;
     }
