@@ -39,7 +39,7 @@
 
 /* Modern background card with purple gradient and rounded corners */
 .info-card {
-  background: linear-gradient(135deg, #8e24aa, #ab47bc); /* Purple gradient */
+  background: #2d333b; /* Dark gray background (GitHub-like color) */
   color: #ffffff; /* White text for contrast */
   border-radius: 12px; /* Rounded corners */
   padding: 20px; /* Inner padding */
