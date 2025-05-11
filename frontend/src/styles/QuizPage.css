@@ -89,3 +89,29 @@
     background-color: #7e22ce;
     transform: translateY(2px);
   }
+  
+  .quiz-footer {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .back-button {
+    display: block;
+    margin: 25px auto 10px; /* Increased top margin from 25px to 40px */
+    padding: 10px 16px;
+    background-color: transparent;
+    color: #a0a0a0;
+    border: 1px solid #444;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: max-content;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+  }

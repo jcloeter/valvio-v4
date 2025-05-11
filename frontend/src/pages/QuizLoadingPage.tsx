@@ -72,11 +72,10 @@ const QuizLoadingPage: React.FC = () => {
     if (countdown === 0) { // Redirect only when countdown hits zero
       const redirectTimer = setTimeout(() => {
         if (quizAttempt) {
-          navigate(`/valvio-v4/quiz/${quizId}`, { state: { quizAttempt } });
+          navigate(`/quiz/${quizId}`, { state: { quizAttempt } });
         } else {
           console.error("Quiz attempt data not available for redirect. Navigating back.");
           setError("Failed to prepare quiz. Please try again."); // User-facing error
-          // Optional: navigate('/valvio-v4'); // Fallback navigation
         }
       }, 0); // Redirect immediately when countdown is 0
        return () => clearTimeout(redirectTimer);
@@ -90,7 +89,7 @@ const QuizLoadingPage: React.FC = () => {
         <h1>Error Loading Quiz</h1>
         <p>{error}</p>
         <button 
-          onClick={() => navigate('/valvio-v4')} 
+          onClick={() => navigate('/')} 
           className="return-button-error" // Ensure this class is styled
         >
           Return to Quizzes

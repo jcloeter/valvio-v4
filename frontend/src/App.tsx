@@ -4,8 +4,10 @@ import AppRoutes from './router/AppRoutes';
 
 function App() {
 
+  const basePath = process.env.NODE_ENV === 'production' ? '/valvio-v4' : '';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basePath}>
       <AppRoutes />
     </BrowserRouter>
   );

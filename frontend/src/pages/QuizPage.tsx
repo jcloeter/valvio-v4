@@ -4,6 +4,7 @@ import '../styles/QuizPage.css';
 import { Pitch, QuizAttemptResponseDto } from '../api';
 import { createImageUrlFromPitchId } from '../util/createImageUrlFromPitchId';
 import { extendPitchList } from '../util/extendPitchList';
+import Modal from '../components/Modal';
 
 const QuizPage: React.FC = () => {
   const location = useLocation();
@@ -17,6 +18,8 @@ const QuizPage: React.FC = () => {
   const [pitchList, setPitchList] = useState<Pitch[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current pitch index
   const [error, setError] = useState<boolean>(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [exitDestination, setExitDestination] = useState('/valvio-v4');
 
   const isQuizComplete = useMemo(()=>{
 
@@ -57,7 +60,7 @@ const QuizPage: React.FC = () => {
   useEffect(()=>{
     if (isQuizComplete) {
       console.log("Quiz is complete");
-      navigate('/valvio-v4/complete', {
+      navigate('/complete', {
         state: {
           quizAttempt,
           stats: {
@@ -140,6 +143,49 @@ const QuizPage: React.FC = () => {
     };
   }, [handleSubmit]);
 
+  // Function to show exit confirmation
+  const showExitConfirmation = (destination: string = '/') => {
+    setExitDestination(destination);
+    setShowExitModal(true);
+  };
+  
+  // Function to execute navigation when confirmed
+  const handleExitConfirm = () => {
+    navigate(exitDestination);
+  };
+  
+  // Modal actions
+  const exitModalActions = (
+    <>
+      <button 
+        className="modal-button-secondary" 
+        onClick={() => setShowExitModal(false)}
+      >
+        Stay
+      </button>
+      <button 
+        className="modal-button-primary" 
+        onClick={handleExitConfirm}
+      >
+        Leave Anyway
+      </button>
+    </>
+  );
+
+  // Add beforeunload event handler for browser refresh/close
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (currentIndex < pitchList.length && pitchList.length > 0) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [currentIndex, pitchList.length]);
+
   return (
     <div className="quiz-page">
       <h3>{quizAttempt.quiz?.name}</h3>
@@ -181,6 +227,23 @@ const QuizPage: React.FC = () => {
       <button className="submit-button" onClick={handleSubmit}>
         Submit
       </button>
+      <button
+        className="back-button"
+        onClick={() => showExitConfirmation()}
+      >
+        Back to Quizzes
+      </button>
+      
+      {/* Exit Confirmation Modal */}
+      <Modal
+        isOpen={showExitModal}
+        onClose={() => setShowExitModal(false)}
+        title="Leave Quiz?"
+        actions={exitModalActions}
+      >
+        <p>Your progress will be lost if you leave this page now.</p>
+        <p>Are you sure you want to exit?</p>
+      </Modal>
     </div>
   );
 };

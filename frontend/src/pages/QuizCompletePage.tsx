@@ -10,7 +10,7 @@ const QuizCompletePage: React.FC = () => {
   const { score, time, missedNotes } = location.state?.stats || { score: 0, time: 0, missedNotes: 0 };
 
   const handleReturnToQuizzes = () => {
-    navigate('/valvio-v4');
+    navigate('/');
   };
 
   const calculateAccuracy = () => {

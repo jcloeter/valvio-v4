@@ -16,8 +16,8 @@ const NavBar: React.FC = () => {
       </button>
       <nav className={`top-nav ${isOpen ? 'open' : ''}`}>
         <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
-        <Link to="/quizzes" onClick={() => setIsOpen(false)}>Quizzes</Link>
-        <Link to="/about" onClick={() => setIsOpen(false)}>About</Link>
+        {/* <Link to="/quizzes" onClick={() => setIsOpen(false)}>Quizzes</Link> */}
+        {/* <Link to="/about" onClick={() => setIsOpen(false)}>About</Link> */}
       </nav>
     </header>
   );

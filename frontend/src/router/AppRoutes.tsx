@@ -10,10 +10,10 @@ const AppRoutes = () => (
     <div>
         <NavBar/>
         <Routes>
-            <Route path="/valvio-v4/loading/:quizId" element={<QuizLoadingPage />} />
-            <Route path="/valvio-v4/complete" element={<QuizCompletePage />} />
-            <Route path="/valvio-v4/quiz/:quizId" element={<QuizPage />} />
-            <Route path="/valvio-v4" element={<HomePage />} />
+            <Route path="/loading/:quizId" element={<QuizLoadingPage />} />
+            <Route path="/complete" element={<QuizCompletePage />} />
+            <Route path="/quiz/:quizId" element={<QuizPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="*" element={<NotFound/>}> </Route>
         </Routes>
     </div>

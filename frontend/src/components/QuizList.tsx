@@ -51,7 +51,7 @@ const QuizList: React.FC = () => {
               <div
                 key={quiz.id}
                 className="quiz-card"
-                onClick={() => navigate(`/valvio-v4/loading/${quiz.id}`)} // Navigate on click
+                onClick={() => navigate(`/loading/${quiz.id}`)} // Navigate on click
                 style={{ cursor: 'pointer' }} // Add pointer cursor for better UX
               >
                 <h3>{quiz.name}</h3>
