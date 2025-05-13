@@ -1,0 +1,12 @@
+.gitignore
+.npmignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/Pitch.md
+docs/QuizAttemptResponseDto.md
+docs/QuizControllerApi.md
+docs/QuizResponseDto.md
+git_push.sh
+index.ts
