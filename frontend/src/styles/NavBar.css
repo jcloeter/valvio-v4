@@ -178,4 +178,8 @@
   .top-nav.open {
     display: flex; /* Show the menu when open */
   }
+
+  .top-nav-container {
+    padding: 0px;
+  }
 }

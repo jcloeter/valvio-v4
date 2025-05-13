@@ -10,18 +10,26 @@
   
   .trackers {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }
   
   .tracker {
-    font-size: 18px;
-    background: linear-gradient(135deg, #333, #444); /* Gradient background */
-    padding: 10px 20px;
+    background-color: #1e1e1e;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Slightly stronger shadow */
-    color: #ffffff; /* White text */
-    text-shadow: none; /* Remove glow effect */
+    padding: 12px 15px;
+    color: #e0e0e0;
+    font-weight: bold;
+    flex: 1;
+    margin: 0 5px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
   }
   
   .music-note img {
@@ -114,4 +122,61 @@
   .back-button:hover {
     background-color: rgba(255, 255, 255, 0.05);
     color: #ffffff;
+  }
+  
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+  }
+  
+  .error-container h2 {
+    color: #ef4444;
+    margin-bottom: 1rem;
+  }
+  
+  .error-container p {
+    margin-bottom: 2rem;
+    color: #e0e0e0;
+  }
+  
+  /* Mobile styles (single breakpoint) */
+  @media (max-width: 576px) {
+    .trackers {
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    
+    .tracker {
+      padding: 8px 6px;
+      font-size: 0.85rem;
+      margin: 0 3px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Add value emphasis */
+    .tracker span {
+      display: block;
+    }
+    
+    .tracker span:first-child {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-bottom: 2px;
+    }
+    
+    .tracker span:last-child {
+      font-size: 1rem;
+      font-weight: bold;
+    }
   }

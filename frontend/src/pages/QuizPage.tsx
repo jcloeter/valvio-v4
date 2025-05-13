@@ -88,7 +88,7 @@ const QuizPage: React.FC = () => {
   };
 
   // Handle submit action
-  const handleSubmit = useCallback((e: KeyboardEvent) => {
+  const handleSubmit = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent> | KeyboardEvent) => {
     e.preventDefault();
 
     const currentPitch = pitchList[currentIndex];
@@ -106,7 +106,7 @@ const QuizPage: React.FC = () => {
     } else {
       setMissedNotes((prev) => prev + 1);
     }
-  }, [currentIndex, pitchList, valves, navigate, quizAttempt, score, time, missedNotes]);
+  }, [currentIndex, pitchList, valves]);
 
   const calculateUserInput = (valves: { first: boolean; second: boolean; third: boolean }): string => {
     // Convert valve states to a string value
@@ -188,62 +188,86 @@ const QuizPage: React.FC = () => {
 
   return (
     <div className="quiz-page">
-      <h3>{quizAttempt.quiz?.name}</h3>
-      <div className="trackers">
-        <div className="tracker">Score: {score}</div>
-        <div className="tracker">Time: {time}s</div>
-        <div className="tracker">Missed Notes: {missedNotes}</div>
-      </div>
-      <div className="music-note">
-        {isQuizComplete ? (
-          <p>Quiz Complete!</p>
-        ) : (
-          <img
-            src={noteImageUrl}
-            alt={`Pitch ${currentIndex + 1}`}
-          />
-        )}
-      </div>
-      <div className="valves">
-        <div
-          className={`valve ${valves.first ? 'pressed' : ''}`}
-          onClick={() => toggleValve('first')}
-        >
-          1
+      {error ? (
+        <div className="error-container">
+          <h2>Error Loading Quiz</h2>
+          <p>There was a problem loading the quiz data.</p>
+          <button 
+            className="back-button"
+            onClick={() => navigate('/')}
+          >
+            Back to Home
+          </button>
         </div>
-        <div
-          className={`valve ${valves.second ? 'pressed' : ''}`}
-          onClick={() => toggleValve('second')}
-        >
-          2
-        </div>
-        <div
-          className={`valve ${valves.third ? 'pressed' : ''}`}
-          onClick={() => toggleValve('third')}
-        >
-          3
-        </div>
-      </div>
-      <button className="submit-button" onClick={handleSubmit}>
-        Submit
-      </button>
-      <button
-        className="back-button"
-        onClick={() => showExitConfirmation()}
-      >
-        Back to Quizzes
-      </button>
-      
-      {/* Exit Confirmation Modal */}
-      <Modal
-        isOpen={showExitModal}
-        onClose={() => setShowExitModal(false)}
-        title="Leave Quiz?"
-        actions={exitModalActions}
-      >
-        <p>Your progress will be lost if you leave this page now.</p>
-        <p>Are you sure you want to exit?</p>
-      </Modal>
+      ) : (
+        <>
+          <h3>{quizAttempt.quiz?.name}</h3>
+          <div className="trackers">
+            <div className="tracker">
+              <span>Score: </span>
+              <span>{score}</span>
+            </div>
+            <div className="tracker">
+              <span>Time: </span>
+              <span>{time}s</span>
+            </div>
+            <div className="tracker">
+              <span>Missed: </span>
+              <span>{missedNotes}</span>
+            </div>
+          </div>
+          <div className="music-note">
+            {isQuizComplete ? (
+              <p>Quiz Complete!</p>
+            ) : (
+              <img
+                src={noteImageUrl}
+                alt={`Pitch ${currentIndex + 1}`}
+              />
+            )}
+          </div>
+          <div className="valves">
+            <div
+              className={`valve ${valves.first ? 'pressed' : ''}`}
+              onClick={() => toggleValve('first')}
+            >
+              1
+            </div>
+            <div
+              className={`valve ${valves.second ? 'pressed' : ''}`}
+              onClick={() => toggleValve('second')}
+            >
+              2
+            </div>
+            <div
+              className={`valve ${valves.third ? 'pressed' : ''}`}
+              onClick={() => toggleValve('third')}
+            >
+              3
+            </div>
+          </div>
+          <button className="submit-button" onClick={(e)=>handleSubmit(e)}>
+            Submit
+          </button>
+          <button
+            className="back-button"
+            onClick={() => showExitConfirmation()}
+          >
+            Back to Quizzes
+          </button>
+          
+          {/* Exit Confirmation Modal */}
+          <Modal
+            isOpen={showExitModal}
+            onClose={() => setShowExitModal(false)}
+            title="Leave Quiz?"
+            actions={exitModalActions}
+          >
+            <p>Your progress will be lost if you leave this page now.</p>
+            <p>Are you sure you want to exit?</p>
+          </Modal>
+        </>
+      )}
     </div>
   );
 };
