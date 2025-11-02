@@ -100,7 +100,7 @@ resource "aws_db_instance" "valvio_api_db" {
   
   # Database Configuration
   engine         = "postgres"
-  engine_version = "16.4"
+  engine_version = "18.0"
   instance_class = "db.t3.micro"  # Free tier eligible
   
   # Storage
