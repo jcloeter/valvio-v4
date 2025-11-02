@@ -13,11 +13,16 @@ const QuizCompletePage: React.FC = () => {
     navigate('/');
   };
 
-  const calculateAccuracy = () => {
+  const calculateScore = () => {
     const totalNotes = quizAttempt?.quiz?.length || 0;
     if (totalNotes === 0) return 0;
-    return Math.round((score / totalNotes) * 100);
+    if (missedNotes >= score) return 0;
+    return Math.round(((score - missedNotes) / totalNotes) * 100);
   };
+
+  const calculateAccuracy = () => { 
+    return `${score - missedNotes}/${quizAttempt?.quiz?.length}`; 
+  }
 
   return (
     <div className="quiz-complete-page">
@@ -28,11 +33,11 @@ const QuizCompletePage: React.FC = () => {
         <div className="stats-container">
           <div className="stat-item">
             <span className="stat-label">Score</span>
-            <span className="stat-value">{score}</span>
+            <span className="stat-value">{calculateScore()}%</span>
           </div>
           <div className="stat-item">
             <span className="stat-label">Accuracy</span>
-            <span className="stat-value">{calculateAccuracy()}%</span>
+            <span className="stat-value">{calculateAccuracy()}</span>
           </div>
           <div className="stat-item">
             <span className="stat-label">Time</span>

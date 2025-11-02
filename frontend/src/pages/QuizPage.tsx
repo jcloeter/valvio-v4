@@ -42,7 +42,9 @@ const QuizPage: React.FC = () => {
 
     if (pitches && quizLength) {
 
-      if (quizAttempt.quiz?.quizTypeName !== 'scale'){
+        console.log(quizAttempt.quiz?.quizTypeName);
+
+      if (quizAttempt.quiz?.quizTypeName !== 'Scale'){
         const extendedPitchList: Pitch[] = extendPitchList(pitches, quizLength);
         console.log("Setting pitch list as ");
         console.log(extendedPitchList);
