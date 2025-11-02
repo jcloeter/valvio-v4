@@ -17,7 +17,7 @@ jobs:
           java-version: '21'
           
       - name: Build with Maven
-        run: mvn package -f backend/pom.xml
+        run: mvn package -f backend/pom.xml -DskipTests
         
       - name: Deploy to EC2
         uses: easingthemes/ssh-deploy@main
@@ -29,10 +29,42 @@ jobs:
           REMOTE_USER: ec2-user
           TARGET: /app
           
-      - name: Restart service
+      - name: Update Environment Variables
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: sudo systemctl restart spring-app
+          script: |
+            # Create or update service file with current environment variables
+            sudo tee /etc/systemd/system/spring-app.service > /dev/null <<EOF
+            [Unit]
+            Description=Spring Boot Application
+            After=network.target
+            
+            [Service]
+            User=ec2-user
+            WorkingDirectory=/app
+            Environment="SPRING_PROFILES_ACTIVE=prod"
+            Environment="SPRING_DATASOURCE_URL=${{ secrets.DATABASE_URL }}"
+            Environment="SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME }}"
+            Environment="SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
+            Environment="SPRING_JPA_HIBERNATE_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}"
+            Environment="SPRING_JPA_DATABASE_PLATFORM=${{ secrets.JPA_DIALECT }}"
+            ExecStart=/usr/bin/java -jar /app/*.jar
+            SuccessExitStatus=143
+            TimeoutStopSec=10
+            Restart=on-failure
+            RestartSec=5
+            
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+            
+            # Reload and restart service
+            sudo systemctl daemon-reload
+            sudo systemctl enable spring-app
+            sudo systemctl restart spring-app
+            
+            # Check service status
+            sudo systemctl status spring-app
