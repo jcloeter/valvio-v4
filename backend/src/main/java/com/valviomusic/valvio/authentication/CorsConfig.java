@@ -14,7 +14,11 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Replace with your frontend URL
+                        .allowedOriginPatterns(
+                            "http://localhost:*",  // Local development (any port)
+                            "https://jcloeter.github.io",  // GitHub Pages
+                            "https://*.trycloudflare.com"  // Cloudflare Tunnel (any subdomain)
+                        )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

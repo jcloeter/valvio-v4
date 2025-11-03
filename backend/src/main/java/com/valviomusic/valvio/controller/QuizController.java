@@ -36,6 +36,8 @@ public class QuizController {
                 .map(QuizResponseDto::fromModel)
                 .toList();
 
+        System.out.println("Getting all quizzes");
+
         return new ResponseEntity<>(quizResponseDtoList, HttpStatus.OK);
     }
 
@@ -45,6 +47,8 @@ public class QuizController {
     ){
         QuizAttempt quizAttempt = quizService.startQuiz(id);
         QuizAttemptResponseDto quizAttemptResponseDto = QuizAttemptResponseDto.fromModel(quizAttempt);
+
+        System.out.println("Starting quiz id " + id);
 
         return new ResponseEntity<>(quizAttemptResponseDto, HttpStatus.CREATED);
     }
