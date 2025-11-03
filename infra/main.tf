@@ -17,6 +17,7 @@ provider "aws" {
 resource "aws_instance" "valvio_api_server" {
   ami           = "ami-0f34c5ae932e6f0e4"
   instance_type = "t2.micro"
+  key_name      = "valvio-key"  # SSH key pair name (without .pem extension)
 
   subnet_id = data.aws_subnets.default.ids[0]
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
@@ -24,6 +25,40 @@ resource "aws_instance" "valvio_api_server" {
   tags = {
     Name = "Valvio API Server"
   }
+
+  user_data = <<-EOF
+    #!/bin/bash
+    yum update -y
+    yum install -y java-17-amazon-corretto-devel
+    mkdir -p /app
+    
+    # You'll need to manually upload JAR or pull from S3/GitHub
+    # For now, create the service file structure
+    
+    cat > /etc/systemd/system/spring-app.service << 'SERVICEEOF'
+    [Unit]
+    Description=Spring Boot Application
+    After=network.target
+    
+    [Service]
+    User=ec2-user
+    WorkingDirectory=/app
+    Environment="SPRING_PROFILES_ACTIVE=prod"
+    Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://${aws_db_instance.valvio_api_db.endpoint}/springappdb"
+    Environment="SPRING_DATASOURCE_USERNAME=${var.db_username}"
+    Environment="SPRING_DATASOURCE_PASSWORD=${var.db_password}"
+    ExecStart=/usr/bin/java -jar /app/valvio-0.0.1-SNAPSHOT.jar
+    SuccessExitStatus=143
+    TimeoutStopSec=10
+    Restart=on-failure
+    RestartSec=5
+    
+    [Install]
+    WantedBy=multi-user.target
+    SERVICEEOF
+    
+    systemctl daemon-reload
+  EOF  
 }
 
 data "aws_vpc" "default" {
@@ -100,7 +135,7 @@ resource "aws_db_instance" "valvio_api_db" {
   
   # Database Configuration
   engine         = "postgres"
-  engine_version = "18.0"
+  engine_version = "17.6"
   instance_class = "db.t3.micro"  # Free tier eligible
   
   # Storage

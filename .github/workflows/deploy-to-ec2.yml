@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '17'
           
       - name: Build with Maven
         run: mvn package -f backend/pom.xml -DskipTests
@@ -51,7 +51,7 @@ jobs:
             Environment="SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
             Environment="SPRING_JPA_HIBERNATE_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}"
             Environment="SPRING_JPA_DATABASE_PLATFORM=${{ secrets.JPA_DIALECT }}"
-            ExecStart=/usr/bin/java -jar /app/*.jar
+            ExecStart=/usr/bin/java -jar /app/valvio-0.0.1-SNAPSHOT.jar
             SuccessExitStatus=143
             TimeoutStopSec=10
             Restart=on-failure
