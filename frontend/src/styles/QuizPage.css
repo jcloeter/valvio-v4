@@ -6,6 +6,40 @@
     height: 100vh;
     color: #ffffff; /* Light text */
     font-family: 'Roboto', sans-serif; /* Modern font */
+    position: relative; /* For positioning the info icon */
+  }
+  
+  /* Info Icon Button - Minimal Style */
+  .info-icon-button {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 28px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: rgba(168, 85, 247, 0.6);
+    z-index: 10;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 0px rgba(168, 85, 247, 0));
+  }
+  
+  .info-icon-button:hover {
+    color: #a855f7;
+    opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.8));
+  }
+  
+  .info-icon-button:active {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, 1));
   }
   
   .trackers {
@@ -147,6 +181,14 @@
   
   /* Mobile styles (single breakpoint) */
   @media (max-width: 576px) {
+    .info-icon-button {
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      font-size: 24px;
+    }
+    
     .trackers {
       max-width: 100%;
       padding: 0 10px;

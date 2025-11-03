@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/QuizLoadingPage.css';
 import { QuizControllerApi, QuizAttemptResponseDto } from '../api';
+import InstructionsContent from '../components/InstructionsContent';
 
 const QuizLoadingPage: React.FC = () => {
   const { quizId } = useParams<{ quizId: string }>();

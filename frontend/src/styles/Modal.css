@@ -13,12 +13,12 @@
 }
 
 .modal-container {
-  background-color: #1e1e1e;
+  background-color: #1a1a1a;
   border-radius: 12px;
   width: 90%;
-  max-width: 450px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-  border: 1px solid #333;
+  max-width: 650px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(168, 85, 247, 0.2);
   animation: slideIn 0.2s ease-out;
   max-height: 90vh;
   display: flex;
@@ -63,6 +63,11 @@
   padding: 16px 24px;
   color: #e0e0e0;
   overflow-y: auto;
+}
+
+.modal-body p {
+  color: #b0b0b0;
+  line-height: 1.6;
 }
 
 .modal-footer {

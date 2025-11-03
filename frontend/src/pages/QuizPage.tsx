@@ -5,6 +5,7 @@ import { Pitch, QuizAttemptResponseDto } from '../api';
 import { createImageUrlFromPitchId } from '../util/createImageUrlFromPitchId';
 import { extendPitchList } from '../util/extendPitchList';
 import Modal from '../components/Modal';
+import InstructionsContent from '../components/InstructionsContent';
 
 const QuizPage: React.FC = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const QuizPage: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current pitch index
   const [error, setError] = useState<boolean>(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [showInstructionsModal, setShowInstructionsModal] = useState(false);
   const [exitDestination, setExitDestination] = useState('/valvio-v4');
 
   const isQuizComplete = useMemo(()=>{
@@ -203,6 +205,15 @@ const QuizPage: React.FC = () => {
         </div>
       ) : (
         <>
+          {/* Info Icon in top right */}
+          <button 
+            className="info-icon-button"
+            onClick={() => setShowInstructionsModal(true)}
+            aria-label="Show instructions"
+          >
+            ℹ️
+          </button>
+          
           <h3>{quizAttempt.quiz?.name}</h3>
           <div className="trackers">
             <div className="tracker">
@@ -267,6 +278,23 @@ const QuizPage: React.FC = () => {
           >
             <p>Your progress will be lost if you leave this page now.</p>
             <p>Are you sure you want to exit?</p>
+          </Modal>
+          
+          {/* Instructions Modal */}
+          <Modal
+            isOpen={showInstructionsModal}
+            onClose={() => setShowInstructionsModal(false)}
+            title="How to Play"
+            actions={
+              <button 
+                className="modal-button-primary" 
+                onClick={() => setShowInstructionsModal(false)}
+              >
+                Got it!
+              </button>
+            }
+          >
+            <InstructionsContent />
           </Modal>
         </>
       )}
