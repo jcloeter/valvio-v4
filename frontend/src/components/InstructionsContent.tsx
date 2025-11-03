@@ -4,7 +4,6 @@ import '../styles/InstructionsContent.css';
 const InstructionsContent: React.FC = () => {
   return (
     <div className="instructions-content">
-      <h3>How to Play</h3>
       <p className="instructions-intro">
         Match the valve combination for each pitch shown on screen. 
         You have three ways to play:
