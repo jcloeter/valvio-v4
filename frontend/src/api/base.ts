@@ -19,7 +19,8 @@ import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
-export const BASE_PATH = "http://localhost:8080".replace(/\/+$/, "");
+// Use environment variable for API base URL, fallback to localhost for development
+export const BASE_PATH = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8080").replace(/\/+$/, "");
 
 /**
  *
