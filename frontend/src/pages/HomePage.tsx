@@ -9,7 +9,7 @@ function HomePage() {
         <h1>Valvio</h1>
         <div className = "info-card">
           <h2>Introducing Valvio, the fastest way to learn trumpet🎺🎶⚡</h2>
-          <p>Valvio is the world's most popular Trumpet Note Quiz App. Made by a trumpet teacher for trumpet players. </p>
+          <p> Made by a trumpet teacher for trumpet players. </p>
         </div>
       </div>
         <QuizList/>
