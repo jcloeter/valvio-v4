@@ -21,6 +21,7 @@ const QuizCompletePage: React.FC = () => {
   };
 
   const calculateAccuracy = () => { 
+    // TODO: Acuracy should actually be the count of notes answered correctly on the first attempt
     return `${score - missedNotes}/${quizAttempt?.quiz?.length}`; 
   }
 
