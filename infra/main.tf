@@ -47,6 +47,7 @@ resource "aws_instance" "valvio_api_server" {
     Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://${aws_db_instance.valvio_api_db.endpoint}/springappdb"
     Environment="SPRING_DATASOURCE_USERNAME=${var.db_username}"
     Environment="SPRING_DATASOURCE_PASSWORD=${var.db_password}"
+    Environment="FIREBASE_SERVICE_ACCOUNT_KEY=${var.firebase_service_account_key}"
     ExecStart=/usr/bin/java -jar /app/valvio-0.0.1-SNAPSHOT.jar
     SuccessExitStatus=143
     TimeoutStopSec=10
