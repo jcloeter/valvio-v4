@@ -9,3 +9,9 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "firebase_service_account_key" {
+  description = "Firebase service account key"
+  type        = string
+  sensitive   = true
+}

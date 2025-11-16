@@ -1,8 +1,17 @@
 package com.valviomusic.valvio.model;
 
-import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class QuizAttempt {
@@ -14,6 +23,10 @@ public class QuizAttempt {
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "started_at", nullable = false)
     private OffsetDateTime startedAt;
@@ -38,6 +51,14 @@ public class QuizAttempt {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public OffsetDateTime getStartedAt() {
