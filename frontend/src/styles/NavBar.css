@@ -59,6 +59,10 @@
     .side-nav {
       width: 200px; /* Smaller width for mobile */
     }
+
+    .nav-auth {
+      margin-top: 40px;
+    }
   }/* Container for the side navigation */
 .side-nav-container {
   position: relative;
@@ -125,6 +129,7 @@
   justify-content: space-between; /* Space between hamburger and nav links */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
   z-index: 1000; /* Ensure it stays above other elements */
+  gap: 20px;
 }
 
 /* Hamburger menu button */
@@ -181,5 +186,64 @@
 
   .top-nav-container {
     padding: 0px;
+  }
+}
+
+/* Auth section in navbar */
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+  margin-right: 40px;
+}
+
+.nav-user-info {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.nav-sign-in,
+.nav-sign-out {
+  background-color: #4285F4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.nav-sign-in:hover,
+.nav-sign-out:hover {
+  background-color: #357ae8;
+}
+
+.nav-sign-out {
+  background-color: #666;
+}
+
+.nav-sign-out:hover {
+  background-color: #555;
+}
+
+@media (max-width: 768px) {
+  .nav-auth {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .nav-user-info {
+    display: none;
+  }
+
+  .nav-sign-in,
+  .nav-sign-out {
+    padding: 6px 12px;
+    font-size: 12px;
   }
 }

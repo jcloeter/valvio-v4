@@ -1,12 +1,14 @@
 package com.valviomusic.valvio.service;
 
-import com.valviomusic.valvio.model.Quiz;
-import com.valviomusic.valvio.model.QuizAttempt;
-import com.valviomusic.valvio.repository.QuizAttemptRepository;
-import com.valviomusic.valvio.repository.QuizRepository;
+import java.time.OffsetDateTime;
+
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
+import com.valviomusic.valvio.model.Quiz;
+import com.valviomusic.valvio.model.QuizAttempt;
+import com.valviomusic.valvio.model.User;
+import com.valviomusic.valvio.repository.QuizAttemptRepository;
+import com.valviomusic.valvio.repository.QuizRepository;
 
 @Service
 public class QuizService {
@@ -22,13 +24,14 @@ public class QuizService {
         this.quizAttemptRepository = quizAttemptRepository;
     }
 
-    public QuizAttempt startQuiz(Long quizId){
+    public QuizAttempt startQuiz(Long quizId, User user){
 
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new IllegalArgumentException("Quiz not found with id: " + quizId));
 
         QuizAttempt quizAttempt = new QuizAttempt();
         quizAttempt.setQuiz(quiz);
+        quizAttempt.setUser(user);
         quizAttempt.setStartedAt(OffsetDateTime.now());
 
         quizAttemptRepository.save(quizAttempt);

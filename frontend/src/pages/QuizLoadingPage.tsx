@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/QuizLoadingPage.css';
 import { QuizControllerApi, QuizAttemptResponseDto } from '../api';
+import { useAuth } from '../contexts/AuthContext';
+import { createApiConfig } from '../config/apiConfig';
 
 const QuizLoadingPage: React.FC = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const navigate = useNavigate();
-  const quizController = new QuizControllerApi();
+  const { idToken } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [quizAttempt, setQuizAttempt] = useState<QuizAttemptResponseDto>();
@@ -21,6 +23,12 @@ const QuizLoadingPage: React.FC = () => {
         setLoading(false);
         return;
       }
+      
+      if (!idToken) {
+        // Token not ready yet
+        return;
+      }
+      
       // Reset states for re-fetches if quizId changes
       setLoading(true);
       setError(null);
@@ -28,6 +36,8 @@ const QuizLoadingPage: React.FC = () => {
       setCountdown(initialCountdownSeconds); // Reset countdown display
 
       try {
+        const apiConfig = createApiConfig(idToken);
+        const quizController = new QuizControllerApi(apiConfig);
         const { data } = await quizController.startQuiz(Number(quizId));
         setQuizAttempt(data);
       } catch (err: any) {
@@ -38,7 +48,7 @@ const QuizLoadingPage: React.FC = () => {
     };
 
     fetchQuizData();
-  }, [quizId]); // Removed quizController from deps as it's stable
+  }, [quizId, idToken]); // Added idToken as dependency
 
   useEffect(() => {
     if (loading || error) {

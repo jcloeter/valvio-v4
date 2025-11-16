@@ -2,18 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import '../styles/QuizList.css'; 
 import { QuizControllerApi, QuizResponseDto } from '../api';
+import { useAuth } from '../contexts/AuthContext';
+import { createApiConfig } from '../config/apiConfig';
 
 
 const QuizList: React.FC = () => {
   const [quizzes, setQuizzes] = useState<QuizResponseDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const quizController = new QuizControllerApi();
+  const { idToken } = useAuth();
   const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
+        const apiConfig = createApiConfig(idToken);
+        const quizController = new QuizControllerApi(apiConfig);
         const { data } = await quizController.getAllQuizzes();
         setQuizzes(data);
       } catch (err: any) {
@@ -23,8 +27,10 @@ const QuizList: React.FC = () => {
       }
     };
 
-    fetchQuizzes();
-  }, []);
+    if (idToken) {
+      fetchQuizzes();
+    }
+  }, [idToken]);
 
   // Group quizzes by quizUnitName
   const groupedQuizzes = quizzes.reduce((acc: Record<string, QuizResponseDto[]>, quiz) => {
