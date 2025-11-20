@@ -19,7 +19,7 @@ jobs:
       - name: Build with Maven
         run: mvn package -f backend/pom.xml -DskipTests
         
-      - name: Deploy to EC2
+      - name: Deploy JAR to EC2
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -29,15 +29,28 @@ jobs:
           REMOTE_USER: ec2-user
           TARGET: /app
           
-      - name: Update Environment Variables
+      - name: Setup Service and Environment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            # Create or update service file with current environment variables
-            sudo tee /etc/systemd/system/spring-app.service > /dev/null <<EOF
+            # Create environment file
+            sudo tee /app/spring-app.env > /dev/null <<'ENVEOF'
+            SPRING_PROFILES_ACTIVE=prod
+            SPRING_DATASOURCE_URL=${{ secrets.DATABASE_URL }}
+            SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME }}
+            SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+            ENVEOF
+            
+            # Set secure permissions
+            sudo chown ec2-user:ec2-user /app/spring-app.env
+            sudo chmod 600 /app/spring-app.env
+            
+            # Create systemd service file
+            sudo tee /etc/systemd/system/spring-app.service > /dev/null <<'SERVICEEOF'
             [Unit]
             Description=Spring Boot Application
             After=network.target
@@ -45,12 +58,7 @@ jobs:
             [Service]
             User=ec2-user
             WorkingDirectory=/app
-            Environment="SPRING_PROFILES_ACTIVE=prod"
-            Environment="SPRING_DATASOURCE_URL=${{ secrets.DATABASE_URL }}"
-            Environment="SPRING_DATASOURCE_USERNAME=${{ secrets.DATABASE_USERNAME }}"
-            Environment="SPRING_DATASOURCE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}"
-            Environment="SPRING_JPA_HIBERNATE_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}"
-            Environment="SPRING_JPA_DATABASE_PLATFORM=${{ secrets.JPA_DIALECT }}"
+            EnvironmentFile=/app/spring-app.env
             ExecStart=/usr/bin/java -jar /app/valvio-0.0.1-SNAPSHOT.jar
             SuccessExitStatus=143
             TimeoutStopSec=10
@@ -59,12 +67,11 @@ jobs:
             
             [Install]
             WantedBy=multi-user.target
-            EOF
+            SERVICEEOF
             
             # Reload and restart service
             sudo systemctl daemon-reload
             sudo systemctl enable spring-app
             sudo systemctl restart spring-app
-            
-            # Check service status
-            sudo systemctl status spring-app
+            sleep 3
+            sudo systemctl status spring-app --no-pager
