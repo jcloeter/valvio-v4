@@ -26,40 +26,13 @@ resource "aws_instance" "valvio_api_server" {
     Name = "Valvio API Server"
   }
 
-  user_data = <<-EOF
-    #!/bin/bash
-    yum update -y
-    yum install -y java-17-amazon-corretto-devel
-    mkdir -p /app
-    
-    # You'll need to manually upload JAR or pull from S3/GitHub
-    # For now, create the service file structure
-    
-    cat > /etc/systemd/system/spring-app.service << 'SERVICEEOF'
-    [Unit]
-    Description=Spring Boot Application
-    After=network.target
-    
-    [Service]
-    User=ec2-user
-    WorkingDirectory=/app
-    Environment="SPRING_PROFILES_ACTIVE=prod"
-    Environment="SPRING_DATASOURCE_URL=jdbc:postgresql://${aws_db_instance.valvio_api_db.endpoint}/springappdb"
-    Environment="SPRING_DATASOURCE_USERNAME=${var.db_username}"
-    Environment="SPRING_DATASOURCE_PASSWORD=${var.db_password}"
-    Environment="FIREBASE_SERVICE_ACCOUNT_KEY=${var.firebase_service_account_key}"
-    ExecStart=/usr/bin/java -jar /app/valvio-0.0.1-SNAPSHOT.jar
-    SuccessExitStatus=143
-    TimeoutStopSec=10
-    Restart=on-failure
-    RestartSec=5
-    
-    [Install]
-    WantedBy=multi-user.target
-    SERVICEEOF
-    
-    systemctl daemon-reload
-  EOF  
+user_data = <<-EOF
+  #!/bin/bash
+  yum update -y
+  yum install -y java-17-amazon-corretto-devel
+  mkdir -p /app
+  chown ec2-user:ec2-user /app
+EOF
 }
 
 data "aws_vpc" "default" {
